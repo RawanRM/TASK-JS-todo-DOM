@@ -30,17 +30,43 @@ renderCategories(categories, CATEGORY_FILTER);
 //test the interactive button.
 
 //const for creating task objects faster
-function tskObj(id, title, category) {
+function tskObj(id, title, category, done) {
   this.id = id;
   this.title = title;
   this.category = category;
+  this.done = done;
   // this.done = done;
 }
 
+/** !!! P L E A S E - N O T E !!!!
+ * 
+ * I cant seem to figure out "taskChecked" function and was stuck here for
+ * the majority of the time.
+ * I was trying to get the checkbox of the taskItemComponent and
+ * added ".checked" for it to return true or false, depending on if checked or not
+ * then I tried to store that boolean result in "checked"
+ * finally, i created a var theId, it should store the index of 
+ * the object I wish to remove from my tasks array
+ * if checked is true then i would remove the object using splice.
+ * 
+ * I understand why Im facing an issue,but I cannot seem to resolve it
+ * ISSUES IM FACING:
+ * when I add a task, I do not need the "done" key
+ * "done" key is needed for when I want to check if the task is checked or not
+ * the issue here, is when Im adding a task and pushing it, the "done" argument
+ * takes an undefined value.
+ * my apologies for the long text.
+ */
 function taskChecked(taskId, checked) {
   // implement the delete task.
   // You are given the task id
-
+  
+  tasks[taskId].done = document.getElementById("task-done").checked;
+  checked = tasks[taskId].done;
+  let theId = tasks[taskId].id;
+  if(checked === true){
+    tasks.splice(taskId,1);
+  }
   console.log(`${checked ? "" : "UN"}CHECKED TASK`, taskId);
 }
 
@@ -49,7 +75,9 @@ myListButton.addEventListener("click",function addTask() {
   //gets id
   const selectedCategory = getSelectedCategoryById(CATEGORY_SELECTOR);
   const taskTitles = getNewTaskText();
+
   // continue the code here
+ 
   tasks.push(new tskObj((tasks.length-1)+1,taskTitles,selectedCategory));
   renderTasks(tasks, "taskslist");
 
